@@ -96,11 +96,11 @@
 
                 banner_id = Math.floor(1 + Math.random() * ncomics);
                 banner_padded = String(banner_id).padStart(3, '0');
-                document.getElementById('banner-url').href = `?c=${banner_id}`;
+                document.getElementById('banner-url').href = `${banner_id}`;
                 document.getElementById('banner-img').src = `banners/banner${banner_padded}.png`;
 
-                let param = new URLSearchParams(window.location.search).get('c');
-                if (param == 'archive') {
+                let target = window.location.pathname.substring(1);
+                if (target == 'archive') {
 
                     document.getElementById('comic').style.display = 'none';
                     document.querySelectorAll('.navbar').forEach(e => e.style.display = 'none');
@@ -111,19 +111,19 @@
                         document.getElementById('archive-body').innerHTML += 
                            `<tr>
                                 <td class="ar-thumb">
-                                    <a class="ar-thumb" href="?c=${i}">
+                                    <a class="ar-thumb" href="${i}">
                                         <img class="ar-thumb" src="comics/${i}.png" title="${c.alt}" alt="${c.title}" />
                                     </a>
                                 </td>
                                 <td class="ar-entry">
-                                    <a class="ar-entry" href="?c=${i}">${c.title}</a>
+                                    <a class="ar-entry" href="${i}">${c.title}</a>
                                 </td>
                             </tr>`;
                     }
 
                 } else {
 
-                    let id = parseInt(param ?? ncomics);
+                    let id = target.length == 0 ? ncomics : parseInt(target);
                     let comic = Comics[id];
 
                     document.title = `Peebles Lab | ${comic.title}`;
@@ -133,16 +133,16 @@
                     document.getElementById('comic-img').title = comic.alt;
 
                     random_id = Math.floor(1 + Math.random() * ncomics);
-                    document.getElementById('rand-url').href = `?c=${random_id}`;
+                    document.getElementById('rand-url').href = `${random_id}`;
 
                     document.querySelectorAll('#prev-url').forEach(e => {
-                        e.href = `?c=${Math.max(id - 1, 1)}`;
+                        e.href = `${Math.max(id - 1, 1)}`;
                     });
                     document.querySelectorAll('#next-url').forEach(e => {
-                        e.href = `?c=${Math.min(id + 1, ncomics)}`;
+                        e.href = `${Math.min(id + 1, ncomics)}`;
                     });
                     document.querySelectorAll('#last-url').forEach(e => {
-                        e.href = `?c=${ncomics}`;
+                        e.href = `${ncomics}`;
                     });
 
                     document.getElementById('fb-url').href = `https://www.facebook.com/share.php?u=https://www.peebleslab.com/${id}`;
@@ -165,7 +165,7 @@
                 <tbody>
                     <tr>
                         <td class="navbar" align="left">
-                            <a class="navbar" href="?c=1">&nbsp;|&lt; First</a>
+                            <a class="navbar" href="1">&nbsp;|&lt; First</a>
                         </td>
                         <td class="navbar" align="left">
                             <a class="navbar" id='prev-url'>&nbsp;&lt; Back</a>
@@ -174,7 +174,7 @@
                             <a class="navbar" id="rand-url">Random</a>
                         </td>
                         <td class="navbar" align="center">
-                            <a class="navbar" href="?c=archive">Archive</a>
+                            <a class="navbar" href="archive">Archive</a>
                         </td>
                         <td class="navbar" align="right">
                             <a class="navbar" id="next-url">Next &gt;&nbsp;</a>
@@ -201,7 +201,7 @@
                 <tbody>
                     <tr>
                         <td class="navbar" align="left">
-                            <a class="navbar" href="?c=1">&nbsp;|&lt; First</a>
+                            <a class="navbar" href="1">&nbsp;|&lt; First</a>
                         </td>
                         <td class="navbar" align="left">
                             <a class="navbar" id='prev-url'>&nbsp;&lt; Back</a>
