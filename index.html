@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
     <head>
         <title>Peebles Lab</title>
@@ -39,6 +40,47 @@
             td.navbar:hover {
                 background-color:#AAAAAA;
             }
+            table.archive {
+                width:800px;
+                margin-left:auto;
+                margin-right:auto;
+                border-width:3px;
+                border-color:#042B6A;
+                border-style:solid;
+                background-color:#042B6A;
+            }
+            td.ar-thumb {
+                border-width:3px;
+                border-color:#042B6A;
+                border-style:solid;
+            }
+            td.ar-entry {
+                background-color:#CCCCCC;
+                border-width:3px;
+                border-color:#042B6A;
+                border-style:solid;
+                height:150px;
+            }
+            img.ar-thumb {
+                border:4px solid #CCCCCC;
+                width: 200px;
+                height: 150px;
+            }
+            a.ar-entry, a.ar-entry:visited {
+                color:white;
+                font-family:sans-serif;
+                font-weight:bold;
+                text-decoration:none;
+                margin-left:0px;
+                margin-right:0px;
+                width:600px;
+                height:150px;
+                display:block;
+            }
+            a.ar-entry:hover {
+                color:#042B6A;
+                text-decoration:underline;
+            }
         </style>
         <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1">
         <meta name="description" content="A Webcomic about Physics and Math, by Andrew Stella and David Kilian">
@@ -49,39 +91,66 @@
         <script type="text/javascript" src="comics.js"></script>
         <script type="text/javascript">
             document.addEventListener("DOMContentLoaded", function(ev) {
+
                 let ncomics = Comics.length - 1;
-                let id = parseInt(new URLSearchParams(window.location.search).get('c') ?? ncomics);
-                let comic = Comics[id];
-
-                document.title = `Peebles Lab | ${comic.title}`;
-                document.getElementById('title').innerText = comic.title;
-                document.getElementById('comic-img').src = `comics/${id}.png`;
-                document.getElementById('comic-img').alt = comic.title;
-                document.getElementById('comic-img').title = comic.alt;
-
-                document.querySelectorAll('#prev-url').forEach(e => {
-                    e.href = `?c=${Math.max(id - 1, 1)}`;
-                });
-                document.querySelectorAll('#next-url').forEach(e => {
-                    e.href = `?c=${Math.min(id + 1, ncomics)}`;
-                });
-                document.querySelectorAll('#last-url').forEach(e => {
-                    e.href = `?c=${ncomics}`;
-                });
-
-                document.getElementById('fb-url').href = `https://www.facebook.com/share.php?u=https://www.peebleslab.com/${id}`;
-                document.getElementById('tw-url').href = `https://www.twitter.com/home?status=Check+out+this+Peebles+Lab+comic+https://www.peebleslab.com/${id}`;
-                document.getElementById('rd-url').href = `https://www.reddit.com/submit?url=https://www.peebleslab.com/${id}`;
-                document.getElementById('dg-url').href = `https://www.digg.com/submit?url=https://www.peebleslab.com/${id}&amp;topic=comics_animation&amp;title=Peebles+Lab+Comic`;
-                document.getElementById('su-url').href = `https://www.stumbleupon.com/submit?url=https://www.peebleslab.com/${id}`;
 
                 banner_id = Math.floor(1 + Math.random() * ncomics);
                 banner_padded = String(banner_id).padStart(3, '0');
                 document.getElementById('banner-url').href = `?c=${banner_id}`;
                 document.getElementById('banner-img').src = `banners/banner${banner_padded}.png`;
 
-                random_id = Math.floor(1 + Math.random() * ncomics);
-                document.getElementById('rand-url').href = `?c=${random_id}`;
+                let param = new URLSearchParams(window.location.search).get('c');
+                if (param == 'archive') {
+
+                    document.getElementById('comic').style.display = 'none';
+                    document.querySelectorAll('.navbar').forEach(e => e.style.display = 'none');
+
+                    document.getElementById('archive').style.display = 'block';
+                    for (var i = 1; i <= ncomics; ++i) {
+                        let c = Comics[i];
+                        document.getElementById('archive-body').innerHTML += 
+                           `<tr>
+                                <td class="ar-thumb">
+                                    <a class="ar-thumb" href="?c=${i}">
+                                        <img class="ar-thumb" src="comics/${i}.png" title="${c.alt}" alt="${c.title}" />
+                                    </a>
+                                </td>
+                                <td class="ar-entry">
+                                    <a class="ar-entry" href="?c=${i}">${c.title}</a>
+                                </td>
+                            </tr>`;
+                    }
+
+                } else {
+
+                    let id = parseInt(param ?? ncomics);
+                    let comic = Comics[id];
+
+                    document.title = `Peebles Lab | ${comic.title}`;
+                    document.getElementById('title').innerText = comic.title;
+                    document.getElementById('comic-img').src = `comics/${id}.png`;
+                    document.getElementById('comic-img').alt = comic.title;
+                    document.getElementById('comic-img').title = comic.alt;
+
+                    random_id = Math.floor(1 + Math.random() * ncomics);
+                    document.getElementById('rand-url').href = `?c=${random_id}`;
+
+                    document.querySelectorAll('#prev-url').forEach(e => {
+                        e.href = `?c=${Math.max(id - 1, 1)}`;
+                    });
+                    document.querySelectorAll('#next-url').forEach(e => {
+                        e.href = `?c=${Math.min(id + 1, ncomics)}`;
+                    });
+                    document.querySelectorAll('#last-url').forEach(e => {
+                        e.href = `?c=${ncomics}`;
+                    });
+
+                    document.getElementById('fb-url').href = `https://www.facebook.com/share.php?u=https://www.peebleslab.com/${id}`;
+                    document.getElementById('tw-url').href = `https://www.twitter.com/home?status=Check+out+this+Peebles+Lab+comic+https://www.peebleslab.com/${id}`;
+                    document.getElementById('rd-url').href = `https://www.reddit.com/submit?url=https://www.peebleslab.com/${id}`;
+                    document.getElementById('dg-url').href = `https://www.digg.com/submit?url=https://www.peebleslab.com/${id}&amp;topic=comics_animation&amp;title=Peebles+Lab+Comic`;
+                    document.getElementById('su-url').href = `https://www.stumbleupon.com/submit?url=https://www.peebleslab.com/${id}`;
+                }
             });
         </script>
     </head>
@@ -105,7 +174,7 @@
                             <a class="navbar" id="rand-url">Random</a>
                         </td>
                         <td class="navbar" align="center">
-                            <a class="navbar" href="archive">Archive</a>
+                            <a class="navbar" href="?c=archive">Archive</a>
                         </td>
                         <td class="navbar" align="right">
                             <a class="navbar" id="next-url">Next &gt;&nbsp;</a>
@@ -120,6 +189,12 @@
         <div id="comic">
             <h2 id="title"></h2>
             <img id="comic-img" class="comic">
+        </div>
+        <div id="archive" style="display:none">
+            <table class="archive">
+                <tbody id="archive-body">
+                </tbody>
+            </table>
         </div>
         <div>
             <table class="navbar" style="height:20px">
